@@ -3,15 +3,18 @@ import type { ClientEvent } from "../types.ts";
 import { fetchData } from "../helpers/fetch_data.ts";
 import { alert } from "../helpers/alert.ts";
 
-let alreadyWarned: Array<string> = [];
+const timerStamps: { [key: string]: number } = {};
 
 async function execute(client: Client) {
-    setInterval(cooldownWarns, 1 * 60 * 1000, client)
+    setInterval(cooldownWarns, 10 * 60 * 1000, client)
     await cooldownWarns(client);
 }
 
 async function cooldownWarns(client: Client) {
     const data = await fetchData();
+    if (!data.secretInfo) {
+        console.warn("data fetch failed!", data)
+    }
 
     const timers = {
         "rescue": data.secretInfo.cooldowns.rescue,
@@ -20,15 +23,12 @@ async function cooldownWarns(client: Client) {
     }
 
     for (const [timerName, timestamp] of Object.entries(timers)) {
-        if (Date.now() > timestamp && !(alreadyWarned.includes(timerName))) {
-            alreadyWarned.push(timerName)
+        if (timerStamps[timerName] === timestamp) continue;
 
-            await alert(client, `your ${timerName} cooldown is over!`)
-        }
-
-        if (Date.now() < timestamp && alreadyWarned.includes(timerName)) {
-            alreadyWarned = alreadyWarned.filter(x => x !== timerName);
-        }
+        timerStamps[timerName] = timestamp;
+        setTimeout(() => {
+            alert(client, `your ${timerName} cooldown is over!`)
+        }, Math.max(timestamp - Date.now(), 1))
     }
 }
 
