@@ -1,13 +1,15 @@
 {
     "compilerOptions": {
         "allowImportingTsExtensions": true,
-        "noEmit": true,
+        "skipLibCheck": true,
         "erasableSyntaxOnly": true,
         "target": "esnext",
-        "moduleResolution": "node16",
-        "module": "node16",
+        "moduleResolution": "nodenext",
+        "module": "nodenext",
         "types": ["node", "discord.js"],
         "verbatimModuleSyntax": true,
         "rewriteRelativeImportExtensions": true,
+        "outDir": "./dist",
+        "sourceMap": true
     }
 }

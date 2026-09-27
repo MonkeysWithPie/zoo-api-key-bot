@@ -12,7 +12,8 @@ const token = process.env.TOKEN;
 const client = new Client({ intents: [] });
 
 const eventsPath = path.join(import.meta.dirname, 'events');
-const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.ts'));
+const sourceExtension = path.extname(import.meta.url);
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(sourceExtension));
 
 for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);

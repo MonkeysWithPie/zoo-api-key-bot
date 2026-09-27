@@ -21,7 +21,8 @@ export function getAllCommands() {
 
 export async function registerFiles(basePath: string) {
     const commandPath = path.join(basePath, 'commands');
-    const commandFiles = readdirSync(commandPath).filter(file => file.endsWith('.ts'));
+    const sourceExtension = path.extname(import.meta.url);
+    const commandFiles = readdirSync(commandPath).filter(file => file.endsWith(sourceExtension));
 
     for (const file of commandFiles) {
         const fullPath = path.join(commandPath, file);

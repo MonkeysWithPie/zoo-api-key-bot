@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "build": "tsc --build",
+    "start": "node dist/index.js",
+    "deploy": "node dist/deploy.js"
+  },
   "dependencies": {
     "@types/node": "^26.4.0",
     "discord.js": "^14.27.0",
