@@ -16,7 +16,7 @@ async function cooldownWarns(client: Client) {
         console.warn("data fetch failed!", data)
     }
 
-    const timers = {
+    const timers: { [key: string]: number } = {
         "rescue": data.secretInfo.cooldowns.rescue,
         "card pull": data.secretInfo.cooldowns.cardPull,
         "seedling plant": data.secretInfo.garden.nextPlant
@@ -34,6 +34,15 @@ async function cooldownWarns(client: Client) {
 
             alert(client, `your ${timerName} cooldown is over!`)
         }, Math.max(timestamp - Date.now(), 1))
+
+        if (timerName === "rescue" && data.equippedLeader === "Wyvern" && Date.now() < timestamp) {
+            setTimeout(async () => {
+                const newData = await fetchData();
+                if (newData.equippedLeader !== "Wyvern" || newData.autoRescues > 0) return;
+
+                alert(client, `prepare to rescue an animal <t:${Math.floor((timestamp - Date.now()) / 1000)}:R>!`)
+            }, Math.max(timestamp - Date.now() + 15000, 1))
+        }
     }
 }
 
