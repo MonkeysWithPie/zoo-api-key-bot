@@ -26,7 +26,12 @@ async function cooldownWarns(client: Client) {
         if (timerStamps[timerName] === timestamp) continue;
 
         timerStamps[timerName] = timestamp;
-        setTimeout(() => {
+        setTimeout(async () => {
+            if (timerName === "rescue") {
+                const newData = await fetchData();
+                if (newData.autoRescues > 0) return;
+            }
+
             alert(client, `your ${timerName} cooldown is over!`)
         }, Math.max(timestamp - Date.now(), 1))
     }
