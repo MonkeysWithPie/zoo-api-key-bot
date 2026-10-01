@@ -14,6 +14,7 @@ async function cooldownWarns(client: Client) {
     const data = await fetchData();
     if (!data.secretInfo) {
         console.warn("data fetch failed!", data)
+        return;
     }
 
     const timers: { [key: string]: number } = {
