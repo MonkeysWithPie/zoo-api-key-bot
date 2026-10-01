@@ -39,9 +39,9 @@ async function cooldownWarns(client: Client) {
         if (timerName === "rescue" && data.equippedLeader === "Wyvern" && Date.now() < timestamp) {
             setTimeout(async () => {
                 const newData = await fetchData();
-                if (newData.equippedLeader !== "Wyvern" || newData.autoRescues > 0 || newData.secretInfo?.cooldowns?.rescue > Date.now()) return;
+                if (newData.equippedLeader !== "Wyvern" || newData.autoRescues > 0) return;
 
-                alert(client, `prepare to rescue an animal <t:${Math.floor(Date.now() / 1000)}:R>!`)
+                alert(client, `prepare to rescue an animal <t:${Math.floor(Date.now() / 1000)}:R>...`)
             }, Math.max(timestamp - Date.now() - 15000, 1))
         }
     }
